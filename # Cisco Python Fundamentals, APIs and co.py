@@ -184,3 +184,141 @@ facts["if_state"][0]
 # {"name": "Gi0/1", "state":"shutdown"} 
 facts["if_state"][0]["name"]
 # Gi0/1
+
+############################
+# Python Conditionals
+# - conditional statements are used to perform different actions depending on whether condition evaluates as true or false
+
+# Conditional Statements
+# if, elif, else
+
+# Comparison Operators
+# ==, !=, <, >, <=, >=
+
+# Boolean Operators
+# and, or, not
+
+# Membership Operators
+# in, not in 
+
+# Identity Operators 
+# is, is not
+
+# - to easily evaluate statement, you can use different built-in operators like comparison ( == )
+# - this operator compares value on left side to value on right side and determines if they are equal (True) or not equal (False)
+# - list of operators that can be used during different evaluations:
+
+# Comparison operators:
+# ==  : This operator compares whether values on the left and right side are equal.
+# !=  : This operator compares whether values on the left and right side are not equal.
+# <   : This operator compares whether the value on the left is less than the value on the right.
+# >   : This operator compares whether the value on the left is greater than the value on the right.
+# <=  : This operator compares whether the value on the left is less than or equal to the value on the right
+# >=  : This operator compares whether the value on the left is greater than or equal to the value on the right.
+
+# Boolean operators:
+# and: This operator requires that both statements are true.
+# or:  This operator allows either of the statements to be true.
+# not: This operator returns the value that is the opposite of the original statement (true for false; false for true).
+
+# Membership operators:
+# : This operator checks whether the value on the left exists in the value on the right.
+# not in: This operator checks whether the value on the left does not exist in the value on the right.
+
+# Identity operators:
+# is: This operator compares whether the value that is assigned to the variable on the left is the same as the   value that is assigned to the variable to the right
+# is not: This operator compares whether the value that is assigned to the variable on the left is not the same as the value that is assigned to the variable to the right.  
+
+# Now you can apply operators to conditional statements
+# There are three conditional statements in Python: 
+# if, elif, else
+# The if condition starts the statement evaluation process
+# - if statement is true, then action is executed and code block is exited
+# - if statement is false, then optional elif conditional check can be used to evaluate another statement for being true or false
+# - If all conditional statements evaluate to false, then else clause can be used to execute line of code 
+
+# - conditional checks can be nested:
+if hostname == "csr1kv-1":
+  if os_version == "16.09.03":
+    print("Device {hostname} is running version {os_version}".format(hostname=hostname, os_version=os_version))
+  else:
+    print("Device {hostname} is running unknown version of os".format(hostname=hostname))
+
+#################################################################
+# Python Loops and Functions
+# Manually obtaining value from nested dictionary or list is not very practical. 
+    # - in addition, it is not very practical to have repetitive code that checks if value has changed
+    # - to address those types of scenarios, you will need to use proper tools within Python
+    # - to address first problem, you will use for loop and to address second one, you will use while loop
+    # - explanation of each loop type and supporting examples are as follows:
+
+###########
+# For Loops
+# - unlike other programming languages, Python "for" loop does not evaluate statement before running underlying code; 
+# - instead, it iterates over a provided object
+# - Python "for" loop is like “for each” loop in other languages
+
+The given object being “looped over” or “iterated over” can be a primitive string, range, or nonprimitive 
+(list, dictionary, tuple, or a set) data type. 
+he syntax of a for loop is as follows: for variable_name in object_of_iteration: 
+
+# variable_name: This temporary variable holds data that are relevant to that iteration cycle. A good general principle is to give the temporary variable a name that describes the data it will hold. For example, if you are iterating over VLANs, then name the variable “vlan,” for example, for vlan in vlans: A more generic name that is often used is “item,” for example, for item in vlans:.
+# in: This variable is membership operator
+# object_of_iteration: This variable name is being looped (iterated) through
+
+# Example:
+vlans = [100, 200, 300]
+for vlan in vlans:
+print(vlan)
+# 100
+# 200
+# 300  
+
+#############
+# While Loops
+# - “While” is another looping method that Python supports, but instead of iterating over object, while loop executes underlying code until supplied condition is true
+# - this mechanism is very useful, but it requires attention
+# - underlying code is running while condition is true, it is possible to enter infinite-looping state during which code runs forever and can negatively affect host on which code is running
+interface_id =1
+  while interface_id <=4:
+    print('Ethernet1/{}'.format(interface_id))
+    interface_id += 1
+# Ethernet1/1
+# Ethernet1/2
+# Ethernet1/3
+# Ethernet1/4
+
+##################
+# Python Functions 
+# - all programming languages, including Python, can create blocks of organized and reusable code that are called functions 
+# - functions provide efficiency, consistency, and modularity
+# - functions can be built-in, written in code, or can be imported from other Python scripts
+
+# create reusable code
+# - wrap standard Python code within function definition  
+def issue_command(hostname, command):
+  print("Connecting to device: {}".format(hostname))
+  print("Issuing the following command: {}".format(command))
+
+issue_command('nycr1', 'show version')
+ # Connecting to device: nycr1
+ # Issuing the following command: show version
+
+
+# Functions might require arguments to be provided when called and optionally return data for further processing 
+# - functions and how to use them:
+
+# User-defined function:
+def hostname_conf(name):
+    return 'hostname {}'.format(name)
+print(hostname_conf('csr1kv-1'))
+# hostname csr1kv-1
+
+# Built-in functions:
+len(vlans)
+# 1
+str(100)
+# '100'
+int(3.14)
+# 3
+
