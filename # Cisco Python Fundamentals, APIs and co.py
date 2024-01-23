@@ -322,3 +322,366 @@ str(100)
 int(3.14)
 # 3
 
+#################################################################
+# Network libraries and packages 
+
+# Network Libraries
+# - software library is collection of prewritten code to assist developers during their software creation process 
+# - breakdown of available prewritten code:
+# Python libraries
+# In-house Libraries
+# Free or Open source Libraries
+
+# - module is single file that contains Python objects that can be reused in scripts
+
+# - package is collection of modules, in one or more directories, to streamline and modularize development of package
+
+# - “library” is often used to refer to collection of modules or packages. 
+# - often standard modules that come with install of Python are referred to as “Python standard library”
+# - libraries can come from different sources. 
+# - in Python, people who are responsible for Python itself develop and maintain libraries
+# - Again, this library is standard library
+
+# - python is not limited to standard library
+# - developers can download libraries from open source and public communities that are often found on GitHub or Python Package Index (PyPI)
+
+# - last type of library is one that is developed in a company for a specific purpose
+# - these libraries are customized, in-house libraries
+# - large clients may have in-house libraries and code to provision different pods for requesting users
+# - this code is customized, not public, and is usually specific to use case
+
+# Modules and Packages 
+# - difference between Python module and Python package was mentioned earlier
+# - module is single file with .py extension that contains some usable code
+# - package is collection of modules that is stored in folder where name of folder is name of package
+
+# - you might be wondering how you can differentiate package from module in Python code itself
+# - you can make this distinction when module is imported and single file is referenced
+# - import Netmiko or from Netmiko, import ConnectHandler 
+# - if you want to import module from package, then you must use “dotted module names” 
+# you could use:
+
+# import cobra.mit.access
+#  or
+# from cobra.mit.access import MoDirectory 
+
+# - where each name that is followed by a dot represents folder and last entry in chain represents file (module)
+
+################
+# Use PYTHONPATH
+# - by default, you can be in any directory to use Python standard library 
+# - you may write a script, script must be stored in one of two locations: 
+# - local directory where script is saved or within PYTHONPATH environment variable
+# - PYTHONPATH is list of directories that system will search for Python modules and packages when doingimports in script
+# - it is quite common to update PYTHONPATH in login script such as .profile
+
+# - you can check PYTHONPATH on Linux shell using env command to see any custom paths that have been added
+# - to see all available directories that Python will search, you can easily check from Python shell using sys.path command:
+
+# >>> import sys
+# >>> print(sys.path)
+# ['', '/usr/lib/python36.zip', '/usr/lib/python3.6', '/usr/lib/python3.6/lib-dynload', '/home/student/.local/lib/python3.6/site-packages', '/usr/local/lib/python3.6/dist-packages', '/usr/lib/python3/dist-packages']
+
+###################
+# Import Statements
+# - import statements help you perform many tasks
+# - following provides description of different import methods and what they do:
+import netmiko: # method imports everything in Netmiko module. 
+
+# Suppose that Netmiko has a variable called VERSION that is defined in its file. 
+# - to use that variable, you will need to use following format to refer to it: 
+netmiko.VERSION. 
+# - same requirement applies to classes and functions
+# ConnectHandler is part of Netmiko module and you can use it by following same syntax: 
+netmiko.ConnectHandler().
+
+# from netmiko import ConnectHandler: 
+# - this method tells python to extract object (in this instance, object is ConnectHandler) from  module and make it directly callable
+# - directly callable means that you do not need to refer to module name and object
+# - instead, you can use class name directly, same approach applies to functions and variables
+
+# from netmiko import ConnectHandler as ch: 
+# - some objects have really long names, and to make them shorter, you can create aliases of original object
+
+###########################
+# Free Open Source Software 
+# Python software is available in many places. 
+# - there is growing community of network developers who host their code on GitHub including Cisco DevNet, 
+# - it has several free and open source projects on DevNet Code Exchange, curated collection of example code and projects
+# - you can find several Cisco libraries on CiscoDevNet GitHub page: https://github.com/CiscoDevNet
+
+# - two Python packages that are open source and quite popular in network industry are Netmiko and Network Automation and Programmability Abstraction Layer with Multivendor (NAPALM):
+# Netmiko: 
+# - this package is multivendor SSH library for Python to simplify Paramiko SSH connections to network devices: 
+# https://github.com/ktbyers/netmiko
+
+# NAPALM: 
+# - this package implements set of functions that interact with different network device operating systems using unified API: 
+# https://github.com/napalm-automation/napalm
+
+#######################
+# Inside Python Modules
+
+# - python module is simply Python file that has one or more Python objects, such as variables, functions, and classes
+# - keep in mind that modules can use other modules
+# - this process is possible using import statements just like you would do if you were writing script (not a module)
+
+# examples of Python modules:
+# - device_data.py
+USERNAME = "cisco"
+PASSWORD = "cisco"
+DEVICE_TYPE = "cisco_xe"
+INVENTORY = ["csr1kv1", "csr1kv2", "csr1kv3"]
+
+# This module only has variables. 
+# - Other Python scripts and other Python modules can use these variables. 
+# - example of script that uses device_data.py module:
+# automation_code.py 
+import device_data
+print(device_data.USERNAME)
+print(device_data.INVENTORY)
+
+# - there are many ways to import data within script from module
+import device_data as dd
+print(dd.USERNAME)
+
+from device_data import USERNAME
+print(USERNAME)
+
+from device_data import USERNAME as user
+print(user)
+
+from device_data import PASSWORD
+print(PASSWORD) 
+
+# - python classes and functions can also be saved in module file and can be referenced in any other Python code
+
+# cisco_networks.py
+def print_routers():
+def verify_bgp(device):
+def configure_bgp():
+
+# Constructing Module
+# - it is quite straightforward to create Python module once you know Python fundamentals
+# - example will use the Python interpreter. 
+# - devnet.py file is custom module for this class that resides 
+# - in /home/student/modules folder
+
+# student@student-vm:~$ cat modules/devnet.py
+ inventory = {
+    "csr1kv1": { 
+        "username": "cisco", 
+        "password": "cisco", 
+        "device_type": "cisco_ios", 
+    }, 
+    "csr1kv2": { 
+        "username": "cisco", 
+        "password": "cisco", 
+        "device_type": "cisco_ios", 
+    }, 
+ }
+
+ def print_routers():
+    for router in inventory: 
+        print(router) 
+
+ def verify_bgp():
+    print("BGP session is active") 
+
+ def configure_bgp():
+    for router in inventory: 
+        print("Configuring BGP for {} ".format(router))
+
+# - Python interpreter is opened by typing python command
+# - present working directory is /home/student
+
+# student@student-vm:~$ python
+# Python 3.6.8 (default, Jan 14 2019, 11:02:34)
+# [GCC 8.0.1 20180414 (experimental) [trunk revision 259383]] on linux
+# Type "help", "copyright", "credits" or "license" for more information. 
+
+# - if you attempt to import module immediately, it will fail
+import devnet
+Traceback (most recent call last):
+File "<stdin>", line 1, in <module> 
+# ModuleNotFoundError: No module named 'devnet'
+
+# - four options to resolve problem: 
+
+# - change your present working directory to modules folder, then start interpreter (this option is easiest)
+# - create special file in modules folder named __init__.py (completely empty), which will make your folder package
+# - add modules folder to your PYTHONPATH environmental variable
+# - copy devnet.py module to folder that exists in PYTHONPATH
+# here are options in operation:
+
+# Option 1: Change the working directory.
+quit()
+# student@student-vm:~$ cd modules
+# student@student-vm:~/modules$ python
+# Python 3.6.8 (default, Jan 14 2019, 11:02:34)
+# [GCC 8.0.1 20180414 (experimental) [trunk revision 259383]] on linux
+# Type "help", "copyright", "credits" or "license" for more information.
+import devnet
+print(devnet.inventory)
+# {'csr1kv1': {'username': 'cisco', 'password': 'cisco', 'device_type': 'cisco_ios'}, 'csr1kv2': {'username': 'cisco', 'password': 'cisco', 'device_type': 'cisco_ios'}}
+
+# option 2:
+# - create  __init__.py file in modules folder:
+quit()
+# student@student-vm:~$ touch modules/__init__.py
+# student@student-vm:~$ python
+# Python 3.6.8 (default, Jan 14 2019, 11:02:34)
+# [GCC 8.0.1 20180414 (experimental) [trunk revision 259383]] on linux
+# Type "help", "copyright", "credits" or "license" for more information.
+import modules.devnet
+print(modules.devnet.inventory)
+# {'csr1kv1': {'username': 'cisco', 'password': 'cisco', 'device_type': 'cisco_ios'}, 'csr1kv2': {'username': 'cisco', 'password': 'cisco', 'device_type': 'cisco_ios'}}
+
+# Option 3: 
+# - add modules folder to PYTHONPATH environmental variable
+import sys
+sys.path.insert(1, '/home/student/modules/') #sys.path is a list and we can invoke any methods a list supports
+import devnet
+print(devnet.inventory)
+# {'csr1kv1': {'username': 'cisco', 'password': 'cisco', 'device_type': 'cisco_ios'}, 'csr1kv2': {'username': 'cisco', 'password': 'cisco', 'device_type': 'cisco_ios'}}
+# - update .bashrc in home directory to add to the PYTHONPATH if you need the PYTHONPATH to have a new directory search for all apps. 
+
+# Option 4. 
+# - copy your module to folder that exists in PYTHONPATH environmental variable (Superuser permission is required.  
+import sys
+sys.path
+# ['', '/usr/lib/python36.zip', '/usr/lib/python3.6', '/usr/lib/python3.6/lib-dynload', '/home/student/.local/lib/python3.6/site-packages', '/usr/local/lib/python3.6/dist-packages', '/usr/lib/python3/dist-packages']
+quit()
+# student@student-vm:~$ sudo cp modules/devnet.py /usr/lib/python3/dist-packages/
+# student@student-vm:~$ python
+# Python 3.6.8 (default, Jan 14 2019, 11:02:34)
+# [GCC 8.0.1 20180414 (experimental) [trunk revision 259383]] on linux
+# Type "help", "copyright", "credits" or "license" for more information.
+import devnet
+print(devnet.inventory)
+# {'csr1kv1': {'username': 'cisco', 'password': 'cisco', 'device_type': 'cisco_ios'}, 'csr1kv2': {'username': 'cisco', 'password': 'cisco', 'device_type': 'cisco_ios'}}
+
+########################################################
+# Netmiko
+# - popular method for communicating with network devices = "SSH client like PuTTY, SecureCRT, or Linux terminal with SSH client" 
+# - with shift to network automation, there needs to be way to “use SSH from Python” 
+
+# - netmiko is Python-based SSH client
+# - rather than connecting to each device separately from GUI client and issuing desired commands one by one, whole process can be automated with Python and commands can be applied to all devices at once if necessary. 
+# - Netmiko is actually wrapper for Paramiko (de facto SSH library in Python) with some added network intelligence for sending commands, log in to devices, and so on, which is why Netmiko is becoming de facto SSH client for networking devices
+# - netmiko supports more than 20 different vendors, most notably Cisco, with Cisco IOS, Cisco IOS XE, and Cisco Nexus Operating System (NX-OS), and others
+# - in following design activity, you will examine Netmiko use case with Cisco Cloud Services Routers:
+
+# Challenge: You have 10 Cisco CSR routers that need following:
+# - configured hostnames
+# - SSH as only permitted terminal connection method
+# - configured loopback interface with proper IP address  
+
+# Assumption:
+# - inventory dictionary containing all necessary information exists
+# - template for each configuration type exists
+
+# Solution:
+# - generate configuration file using templates and information from inventory dictionary
+# - connect to each device using Netmiko
+# - push configuration file
+# - verify that configuration was successfully applied
+# - disconnect from device
+
+# Common Netmiko Methods
+# - netmiko has many functions (methods) that developers can use while interacting with device
+# - because it is very long list, most useful ones are discussed here with detailed descriptionand applicable use cases 
+# - to learn about all supported methods, refer to official Netmiko documentation
+
+# ConnectHandler(): 
+# - Python class initiates connection with device
+# - you will need to provide IP address, username, password, and device type information to successfully initiate connection  
+# Example: 
+device = ConnectHandler(host="csr1kv1", username="cisco", password="cisco", device_type="cisco_xe")
+
+# is_alive(): 
+# - this method determines if connection with device is alive and returns True or False 
+# Example: 
+device.is_alive()
+# True
+
+# establish_connection(): 
+# - In cases when device is disconnected manually or automatically due to connection timeout (default 60 seconds), this method can be used to reinitiate connection
+# Example: 
+device.is_alive()
+# False
+device.establish_connection()
+device.is_alive()
+# True
+
+disconnect(): 
+# - This method is used to manually disconnect session
+# Example:
+device.is_alive()
+# True
+device.disconnect()
+device.is_alive()
+# False
+
+# send_command(<VALID_COMMAND>): 
+# - Use this method to send operational show command to device 
+# - it must be single string that contains valid command
+# Example:
+device.send_command("show version")
+# 'Cisco IOS XE Software, Version 16.09.03\nCisco IOS Software [Fuji], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 16.9.3, RELEASE SOFTWARE (fc2)\nTechnical Support: http://www.cisco.com/techsupport\nCopyright (c) 1986-2019 by Cisco Systems, Inc.\nCompiled Wed 20-Mar-19 07:56 by mcpre\n\n\nCisco IOS-XE software, Copyright (c) 2005-2019 by cisco Systems, Inc.\nAll rights reserved.  Certain components of Cisco IOS-XE software are\nlicensed under the GNU General Public License ("GPL")
+# <... output omitted ...>
+
+# send_config_from_file(<PATH_TO_THE_FILE>): 
+# - this method can be used to apply configuration file to device 
+# - in argument, you must supply full path to configuration file
+# Example:
+# % cat interface_conf.cfg
+# interface GigabitEthernet1
+# description SALES 
+device.send_config_file("/home/student/config_files/interface_conf.cfg")
+ 'config term\nEnter configuration commands, one per line.  End with CNTL/Z.\ncsr1kv1(config)#interface GigabitEthernet1\ncsr1kv1(config-if)#  description SALES\ncsr1kv1(config-if)#end\ncsr1kv1#'
+
+# send_config_set([<COMMAND_1>, <COMMAND_2>]): 
+# - this method can be used to send list of configuration commands to device
+# - list must contain commands as string and must be in proper order
+# Example:
+print(interface_config)
+# ['interface GigabitEthernet1', 'description HR']
+device. send_config_set(interface_config)
+# 'config term\nEnter configuration commands, one per line.  End with CNTL/Z.\ncsr1kv1(config)#interface GigabitEthernet1\ncsr1kv1(config-if)#description HR\ncsr1kv1(config-if)#end\ncsr1kv1#'
+
+# open_session_log(<FILE_NAME>): 
+# - use this method to log your session to file for debugging purposes
+# Example:
+device.open_session_log("/home/student/logs/CSR.log")
+# % cat CSR.log
+# csr1kv1#show version
+# Cisco IOS XE Software, Version 16.09.03
+# Cisco IOS Software [Fuji], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 16.9.3, RELEASE SOFTWARE (fc2)
+# Technical Support: http://www.cisco.com/techsupport
+# Copyright (c) 1986-2019 by Cisco Systems, Inc.
+# Compiled Wed 20-Mar-19 07:56 by mcpre
+# Cisco IOS-XE software, Copyright (c) 2005-2019 by cisco Systems, Inc.
+# All rights reserved.  Certain components of Cisco IOS-XE software are
+# licensed under the GNU General Public License ("GPL") Version 2.0.  The
+# software code licensed under GPL Version 2.0 is free software that comes
+# with ABSOLUTELY NO WARRANTY.  You can redistribute and/or modify such
+# GPL code under the terms of GPL Version 2.0.  For more details, see the
+# documentation or "License Notice" file accompanying the IOS-XE software,
+# or the applicable URL provided on the flyer accompanying the IOS-XE
+# software.
+# <... output omitted ...>
+
+# session_timeout: 
+# - this variable defines number of seconds after which session should time out. 
+# - it can be defined with ConnectHandler as extra argument, or can be changed after connection is initiated 
+# - default value is 60 seconds
+# Example:
+device = ConnectHandler(host="csr1kv1", username="cisco", password="cisco", device_type="cisco_xe", session_timeout=120)
+device.session_timeout
+# 120
+device.session_timeout = 180
+device.session_timeout
+# 180
+
+      
